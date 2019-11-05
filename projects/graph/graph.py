@@ -70,13 +70,24 @@ class Graph:
                     s.push(neighbor)
 
 
-    def dft_recursive(self, starting_vertex):
+    def dft_recursive(self, starting_vertex, visited=None):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         This should be done using recursion.
         """
-        pass  # TODO
+        #Initialize visited, if it hasn't been initalized yet
+        if visited is None:
+            visited = set()
+
+        #If the vertex has not been visited
+        if starting_vertex not in visited:
+            #Mark it as visited
+            print(starting_vertex)
+            visited.add(starting_vertex)
+            #Then call DFT recursive on each neighbor
+        for neighbor in self.vertices[starting_vertex]:
+            self.dft_recursive(neighbor, visited)
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -96,6 +107,21 @@ class Graph:
                 # Then add A PATH TO its neighbors to the back of the queue
                   # COPY THE PATH
                   # APPEND THE NEIGHOR TO THE BACK
+        qq = Queue()
+        visited = set()
+        qq.enqueue([starting_vertex])
+    
+        while qq.size() > 0:
+            path = qq.dequeue()
+            vertex = path[-1]
+            if vertex not in visited:
+                if vertex == destination_vertex:
+                    return path
+                visited.add(vertex)
+                for next_vert in self.verticies[vertex]:
+                    new_path = list(path)
+                    new_path.append(next_vert)
+                    qq.enqueue(new_path)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -103,7 +129,20 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        stack = Stack()
+        visited = set()
+        stack.push([starting_vertex])
+        while stack.size() > 0:
+            path = stack.pop()
+            vertex = path[-1]
+            if vertex not in visited:
+                if vertex == destination_vertex:
+                    return path
+                visited.add(vertex)
+                for next_vert in self.verticies[vertex]:
+                    new_path = list(path)
+                    new_path.append(next_vert)
+                    stack.push(new_path)
 
 
 
