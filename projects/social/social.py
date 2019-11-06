@@ -49,6 +49,8 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        for i in range(0, numUsers):
+            self.addUser(f"{i}")
         # call addUser() until our number of users is numUsers
         for i in range(numUsers):
             self.addUser(f"User {i+1}")
@@ -57,6 +59,9 @@ class SocialGraph:
         # totalFriendships = avgFriendships * numUsers
         # Generate a list of all possible friendships
         possibleFriendships = []
+        for UserID in self.users:
+            for friendID in range(UserID + 1, self.lastID + 1):
+                possibleFriendships.append((UserID, friendID,))
         # Avoid dups by ensuring the first ID is smaller than the second
         for userID in self.users:
             for friendID in range(userID + 1, self.lastID + 1):
@@ -88,6 +93,7 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+
         return visited
 
 
