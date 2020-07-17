@@ -1,8 +1,10 @@
-
+import random
 
 class User:
     def __init__(self, name):
         self.name = name
+    def __repr__(self):
+        return self.name
 
 class SocialGraph:
     def __init__(self):
@@ -34,7 +36,7 @@ class SocialGraph:
         """
         Takes a number of users and an average number of friendships
         as arguments
-
+​
         Creates that number of users and a randomly distributed friendships
         between those users.
 
@@ -47,26 +49,60 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        for i in range(0, numUsers):
+            self.addUser(f"{i}")
+        # call addUser() until our number of users is numUsers
+        for i in range(numUsers):
+            self.addUser(f"User {i+1}")
 
-        # Create friendships
+        # Create random friendships
+        # totalFriendships = avgFriendships * numUsers
+        # Generate a list of all possible friendships
+        possibleFriendships = []
+        for UserID in self.users:
+            for friendID in range(UserID + 1, self.lastID + 1):
+                possibleFriendships.append((UserID, friendID,))
+        # Avoid dups by ensuring the first ID is smaller than the second
+        for userID in self.users:
+            for friendID in range(userID + 1, self.lastID + 1):
+                possibleFriendships.append( (userID, friendID) )
+
+        # Shuffle the list
+        random.shuffle(possibleFriendships)
+        print("random friendships:")
+        print(possibleFriendships)
+
+        # Slice off totalFriendships from the front, create friendships
+        totalFriendships = avgFriendships * numUsers // 2
+        print(f"Friendships to create: {totalFriendships}\n")
+        for i in range(totalFriendships):
+            friendship = possibleFriendships[i]
+            self.addFriendship( friendship[0], friendship[1] )
+
+
+
 
     def getAllSocialPaths(self, userID):
         """
         Takes a user's userID as an argument
-
+​
         Returns a dictionary containing every user in that user's
         extended network with the shortest friendship path between them.
-
+​
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+
         return visited
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populateGraph(10, 2)
+    sg.populateGraph(11, 3)
+    print("USERS:")
+    print(sg.users)
+    print("FRIENDSHIPS:")
     print(sg.friendships)
-    connections = sg.getAllSocialPaths(1)
-    print(connections)
+    # connections = sg.getAllSocialPaths(1)
+    # print(connections)
